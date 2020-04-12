@@ -76,7 +76,7 @@ abstract class Rule
         return $new;
     }
 
-    public function translateMessage(string $message, array $arguments = []): string
+    protected function translateMessage(string $message, array $arguments = []): string
     {
         if ($this->translator === null) {
             return $this->formatMessage($message, $arguments);
