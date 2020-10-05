@@ -51,40 +51,4 @@ final class Validator implements ValidatorInterface
         }
         $this->attributeRules[$attribute]->add($rule);
     }
-
-    /**
-     * Return all attribute rules as array.
-     *
-     * For example:
-     *
-     * ```php
-     * [
-     *    'amount' => [
-     *        [
-     *            'number',
-     *            'integer' => true,
-     *            'max' => 100,
-     *            'notANumberMessage' => 'Value must be an integer.',
-     *            'tooBigMessage' => 'Value must be no greater than 100.'
-     *        ],
-     *        ['callback'],
-     *    ],
-     *    'name' => [
-     *        'hasLength',
-     *        'max' => 20,
-     *        'message' => 'Value must contain at most 20 characters.'
-     *    ],
-     * ]
-     * ```
-     *
-     * @return array
-     */
-    public function asArray(): array
-    {
-        $rulesOfArray = [];
-        foreach ($this->attributeRules as $attribute => $rules) {
-            $rulesOfArray[$attribute] = $rules->asArray();
-        }
-        return $rulesOfArray;
-    }
 }
