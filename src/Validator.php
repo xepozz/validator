@@ -17,13 +17,14 @@ final class Validator implements ValidatorInterface
     public function __construct(iterable $rules = [])
     {
         foreach ($rules as $attribute => $ruleSets) {
-            if ($ruleSets instanceof Rule) {
-                $ruleSets = [$ruleSets];
-            } elseif (!is_iterable($ruleSets)) {
+            if ($ruleSets instanceof RuleInterface) {
+                $this->addRule($attribute, $ruleSets);
+            } elseif (is_iterable($ruleSets)) {
+                foreach ($ruleSets as $rule) {
+                    $this->addRule($attribute, $rule);
+                }
+            } else {
                 throw new \InvalidArgumentException('Attribute rules should be either an instance of Rule class or an array of instances of Rule class.');
-            }
-            foreach ($ruleSets as $rule) {
-                $this->addRule($attribute, $rule);
             }
         }
     }

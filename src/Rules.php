@@ -12,7 +12,7 @@ use Yiisoft\Validator\Rule\Callback;
 final class Rules
 {
     /**
-     * @var Rule[]
+     * @var RuleInterface[]
      */
     private array $rules = [];
 
@@ -46,14 +46,18 @@ final class Rules
         return $compoundResult;
     }
 
-    private function normalizeRule($rule): Rule
+    private function normalizeRule($rule): RuleInterface
     {
         if (is_callable($rule)) {
             $rule = new Callback($rule);
         }
 
-        if (!$rule instanceof Rule) {
-            throw new \InvalidArgumentException('Rule should be either instance of Rule class or a callable');
+        if (!$rule instanceof RuleInterface && !is_callable($rule)) {
+            throw new \InvalidArgumentException(sprintf(
+                '$rule must be instance of %s or callable, %s given',
+                RuleInterface::class,
+                is_object($rule) ? get_class($rule) : gettype($rule)
+            ));
         }
 
         return $rule;
